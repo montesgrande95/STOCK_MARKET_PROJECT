@@ -64,7 +64,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<br />
+<div align="center">
+  <img src="/IMAGENES_README/stock_market_screemshot.png"  width=80 height=80  alt="PROJECT LOGO"/>
+</div>
+
 
 El objetivo del proyecto es mostrar una comparacion de los datos tanto actuales como historicos de bolsa con
 las busquedas que obtienen las empresas que el usuario decida en google trends, obteniendo una idea de la relevancia

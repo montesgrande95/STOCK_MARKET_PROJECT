@@ -18,7 +18,7 @@
     <img src="/IMAGENES_README/stock_market_logo.png"  width=800 height=500  alt="PROJECT LOGO"/>
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">STOCK MARKET PROJECT</h3>
 
   <p align="center">
     A stock market dashboard to give you information about the market

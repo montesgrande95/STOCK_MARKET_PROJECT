@@ -1,4 +1,4 @@
-<img src="/IMAGENES_README/stock_market_logo.png"  width = 700   alt="PROJECT LOGO"/>
+
 
 
 
@@ -15,7 +15,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/montesgrande95/STOCK_MARKET_PROJECT">
-    <img src="/IMAGENES_README/stock_market_logo.png"  width=80 height=80  alt="PROJECT LOGO"/>
+    <img src="/IMAGENES_README/stock_market_logo.png"  width=800 height=350  alt="PROJECT LOGO"/>
   </a>
 
   <h3 align="center">Best-README-Template</h3>

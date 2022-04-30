@@ -66,7 +66,7 @@
 
 <br />
 <div align="center">
-  <img src="/IMAGENES_README/stock_market_screemshot.png"  width=80 height=80  alt="PROJECT LOGO"/>
+  <img src="/IMAGENES_README/stock_market_screemshot.png"  width=350 height=350  alt="PROJECT LOGO"/>
 </div>
 
 

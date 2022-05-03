@@ -158,7 +158,9 @@ _Estas seran todas las librerias que necesitamos instalar en nuestro terminal pa
 <!-- CONTACT -->
 ## Contact
 
-Pablo Montes Grande -p.montes.grande@gmail.com
+Pablo Montes Grande - p.montes.grande@gmail.com
+
+Linkedin Profile: [https://www.linkedin.com/in/pablomontesgrande](https://www.linkedin.com/in/pablomontesgrande)
 
 Project Link: [https://github.com/montesgrande95/STOCK_MARKET_PROJECT](https://github.com/montesgrande95/STOCK_MARKET_PROJECT)
 

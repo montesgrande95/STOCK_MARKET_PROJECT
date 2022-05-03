@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/montesgrande95/STOCK_MARKET_PROJECT">
-    <img src="/IMAGENES_README/stock_market_logo.png"  width=600 height=500  alt="PROJECT LOGO"/>
+    <img src="/IMAGENES_README/stock_market_logo.png"  width=300 height=300  alt="PROJECT LOGO"/>
   </a>
 
   <h3 align="center">STOCK MARKET PROJECT</h3>

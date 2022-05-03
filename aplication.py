@@ -10,31 +10,13 @@ from pytrends.request import TrendReq
 
 import streamlit.components.v1 as components
 import requests
+import streamlit as st
+import tweepy
+import csv
+import re
+import emoji_data_python
 
 
-
-
-
-# st.set_page_config(layout="wide")
-
-
-
-#PRIMERA FUNCION PARA QUE APAREZCA LA BARRA DE CARGA Y CUANTO LE QUEDA PARA COMPLETARSE
-
-#def main():
-    #status_text = st.empty()
-    #progress_bar = st.progress(0)
-
-    #for i in range(100):
-        #status_text.text(f'Progress: {i}%')
-        #progress_bar.progress(i + 1)
-        #time.sleep(0.1)
-
-    ##status_text.text('Done!')
-    #st.balloons()
-
-
-##PARA LA PRIMERA EMPRESA
 
 
 #CREAMOS UNA FUNCION DONDE NOS VA A DEVOLVER TODOS LOS NOMBRES DE LAS EMPRESAS QUE TENEMOS EN UN ARCHIVO EXCEL
@@ -60,7 +42,7 @@ def create_dataframe(ticker_name):
         dataframe = dataframe.tail(7)
     return dataframe
 
-# DEFINIMOS EL SEGUNDO DATAFRAME PARA LOS DATOS DE GOOGLE TRENDS
+#FUNCION PARA OBTENER LOS DATOS DE GOOGLE TRENDS ANTES DE GRAFICARLOS, NOS DA LOS DATOS DE 3 MESES, PERO PODEMOS PONER LOS DATOS DESDE QUE QUERAMOS. 
 def obtain_google_trends(company_name):
     pytrends = TrendReq(hl='en-US', tz=360)
 
@@ -70,6 +52,7 @@ def obtain_google_trends(company_name):
     data = data.tail(7)
     return data
 
+#FUNCION PARA GRAFICAR LOS DATOS DE GOOGLE TRENDS.
 
 def plot_google_trends(data, company_name):
 
@@ -79,28 +62,15 @@ def plot_google_trends(data, company_name):
 
 
 
-
-#DEFINIMOS LA FUNCION PARA GRAFICAR LOS DATOS DE GOOGLE TRENDS
-
-
-#SEPARAR LAS EMPRESAS POR SECTOR, PARA TENER VARIAS SELECTBOX Y PODER FILTRAR LAS EMPRESAS POR SECTOR PARA VER LAS RENTABILIDAD ETC
-#METEMOS OTROS DOS SELECTBOX EN EL SIDEBAR PARA PODER COMPARAR TRES EMPRESAS 
-#EN LA PARTE DE DEBAJO DEL SIDEBAR VAMOS A TENER UNA PESTAÑA PARA PODER INVERTIR
-#COMO PLUS VAMOS A INTRODUCIR LA RENTABILIDAD DE CADA EMPRESA.
-#CONECTARSE A UNA API DE NOTICIAS PARA QUE DEBAJO DE LA GRAFICA DE CADA EMPRESA NOS APAREZCAN NOTICIAS DE ESA EMPRESA.
-
     
 
-# FUNCION PARA GRAFICAR LOS VALORES MINIMO Y MAXIMO DE LA EMPRESA QUE EL USUARIO DECIDA PARA COMPARARLO CON LA GRAFICA QUE CREEMOS DE GOOGLE TRENDS
-
-
-#PARA LA SEGUNDA EMPRESA 
-
+#FUNCION PARA IGUALAR EL TICKER DE LA EMPRESA AL NOMBRE DE LA EMPRESA, PARA NO TENER QUE INTRODUCIR EL TICKER.
 def ticker_para_empresa2():
     company_name2= st.sidebar.selectbox("Seleccione segunda empresa", datos["Name"])
     ticker_name2 = datos.loc[datos["Name"] == company_name2, "Ticker" ]
     return ticker_name2, company_name2
 
+#FUNCION PARA GRAFICAR LOS DATOS OBTENIDOS DE YAHOO FINANCE
 def graficar_yahoo(dataframe):
     fig2 = px.line(dataframe, x=dataframe.index, y=['High', 'Low'] , width=500, height=400)
     
@@ -110,6 +80,7 @@ def graficar_yahoo(dataframe):
     #grafico = fig.show()
     return fig2
 
+#FUNCION PARA PODER OBTENER LOS TWEETS Y MOSTRARLOS POSTERIORMENTE MOSTRAR LOS TWEETS CON IFRAME
 def extractTweet(url):
 
     api = "https://publish.twitter.com/oembed?url={}".format(url)
@@ -184,21 +155,80 @@ if __name__ == "__main__":
 
 
     
+#BUSCADOR DE TWEETS
 
 
 
+default_accounts = ['LizAnnSonders', 
+  'bespokeinvest', 
+  'Schuldensuehner', 
+  'expansioncom', 
+  'Reuters', 
+  'sentimentrader', 
+  'WSJecon', 
+  'zerohedge',
+  'WSJmarkets',
+  'markets',
+  'InvestingEspana',
+  'Investingcom',
+  'lisaabramowicz1',
+  'Stocktwits',
+  'SJosephBurns',
+  'MarketWatch',
+  'PeterSchiff',
+  'alphatrends',
+  'cnbc',
+  'traderstewie',
+  'tradertvshawn',
+  'OptionsHawk'
+  ]
+accounts = default_accounts + ['']
 
 
-
-    # st.title("MARKET STOCK DASHBOARD")
-    #st.image("https://i.pinimg.com/474x/57/c4/46/57c44638a33198a802e30cc93619f668--city-state-the-state.jpg")
-   
-    # st.header("GRAFICO YAHOO FINANCE" )
+@st.cache
+def get_tweets(account):
+    return api.user_timeline(screen_name=account, count=200, tweet_mode='extended')
 
 
+st.sidebar.title('Get Tweets')
+st.sidebar.markdown('A [simple demonstration](https://github.com/CaliberAI/streamlit-get-tweets) of using [Streamlit](https://streamlit.io/) with [Tweepy](https://www.tweepy.org/) to get Tweets from Twitter Accounts.')
+api_key = st.sidebar.text_input('Twitter API Key', '')
+api_secret_key = st.sidebar.text_input('Twitter API Secret Key', '')
+access_token = st.sidebar.text_input('Twitter Access Token', '')
+access_token_secret = st.text_input('Twitter Access Token Secret', '')
+included_accounts = st.sidebar.multiselect('Accounts', accounts, default_accounts)
+go = st.sidebar.button('Get Tweets')
 
-#MONTAMOS EL STREAMLIT EN EL QUE VAMOS A TENER LAS GRAFICAS DE YAHOO FINANCE Y DE GOOGLE TRENDS, CON UN SIDEBAR PARA QUE EL USUARIO META EL NOMBRE DE LA EMPRESA QUE QUIERA.
-#PARA PODER HACER LA COMPARATIVA ENTRE LAS BUSQUEDAS DE GOOGLE TRENDS CON LOS DATOS DE BOLSA DE LA EMPRESA QUE EL USUARIO HA DECIDIDO.
+if go:
+    try:
+        auth = tweepy.OAuthHandler(api_key, api_secret_key)
+        auth.set_access_token(access_token, access_token_secret)
+        api = tweepy.API(auth)
+        tweets = []
+        for account in included_accounts:
+            st.write(account)
+            api_response = get_tweets(account)
+            for tweet in api_response:
+                if tweet.retweeted:
+                    text = tweet.retweeted_status.full_text
+                else:
+                    text = tweet.full_text
+                if tweet.lang == 'en':
+                    text = re.sub('http://\S+|https://\S+', ' ', text)
+                    text = re.sub(emoji_data_python.get_emoji_regex(), ' ', text)
+                    text = re.sub('\n', ' ', text)
+                    text = re.sub('&amp;', '&', text)
+                    text = re.sub('@', '', text)
+                    text = re.sub('  ', ' ', text)
+                
+                    tweets += [[tweet.user.screen_name, text, tweet.id_str]]
+        st.sidebar.subheader('Tweets')
+        st.sidebar.dataframe(tweets)
+        with open('tweets.csv', 'w', newline='') as csv_file:
+            writer = csv.writer(csv_file, delimiter=',')
+            writer.writerows(tweets)
+    except ApiException as e:
+        st.sidebar.exception("Exception: %s\n" % e)
 
   
 

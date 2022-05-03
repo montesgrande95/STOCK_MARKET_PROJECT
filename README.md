@@ -2,12 +2,7 @@
 
 
 
--->
-
-
--->
-
-[![LinkedIn][linkedin-shield]][www.linkedin.com/in/pablomontesgrande]
+[linkedin profile][www.linkedin.com/in/pablomontesgrande]
 
 
 
@@ -15,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/montesgrande95/STOCK_MARKET_PROJECT">
-    <img src="/IMAGENES_README/stock_market_logo.png"  width=800 height=500  alt="PROJECT LOGO"/>
+    <img src="/IMAGENES_README/stock_market_logo.png"  width=600 height=500  alt="PROJECT LOGO"/>
   </a>
 
   <h3 align="center">STOCK MARKET PROJECT</h3>
@@ -53,7 +48,6 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
